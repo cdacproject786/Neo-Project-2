@@ -1,0 +1,40 @@
+server:
+  port: 8020
+
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: USER-SERVICE
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/userservice/**
+
+        - id: SECURITY-SERVICE
+          uri: lb://SECURITY-SERVICE
+          predicates:
+            - Path=/user/security/**
+
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
+eureka:
+  instance:
+    prefer-Ip-Address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+logging:
+  level:
+    org:
+      springframework: DEBUG
+
+remote:
+  home: http://localhost:8030/user/security/demo
+
