@@ -35,7 +35,9 @@ public class CustomSecurityContext implements ServerSecurityContextRepository {
                 .flatMap(authHeader -> {
                     String token = authHeader.substring(7);
                     Authentication auth = new UsernamePasswordAuthenticationToken(token,token);
-                    return this.reactiveManager.authenticate(auth).map(SecurityContextImpl::new);
+                    return this.reactiveManager.authenticate(auth)
+                            .switchIfEmpty(Mono.error(new Exception("Invalid Authentication Token")))
+                            .map(SecurityContextImpl::new);
                 });
     }
 

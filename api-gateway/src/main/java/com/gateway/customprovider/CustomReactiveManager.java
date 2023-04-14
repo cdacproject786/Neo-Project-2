@@ -23,6 +23,7 @@ public class CustomReactiveManager implements ReactiveAuthenticationManager {
         return Mono.just(new UsernamePasswordAuthenticationToken(token,null,null));
 
         else
+            //throw new Exception("Token validation failed");
             return null;
     }
 }
